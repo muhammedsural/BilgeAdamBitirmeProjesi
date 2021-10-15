@@ -1,0 +1,187 @@
+@using BitirmeProjesi.Web.UI.Areas.Admin.Models.CartViewModels
+@using System.Globalization
+@{
+    List<CartViewModel> cartList;
+    cartList = TempData["Cart"] as List<CartViewModel>;
+
+}
+<div class="top_bar">
+    <div class="container">
+        <div class="row">
+            <div class="row">
+                <div class="col-md-12 col-sm-12">
+                    <div class="tb_left pull-left">
+                        <p>Hoş Geldiniz.</p>
+                    </div>
+                    <div class="tb_center pull-left">
+                        <ul>
+                            <li><i class="fa fa-phone"></i> 7/24: <a href="#">(+000) 000 000 00 00</a></li>
+                            <li>
+                                <i class="fa fa-envelope-o"></i> <a href="#">online support@web.com</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="tb_right pull-right">
+                        <ul>
+                            <li>
+                                <div class="tbr-info">
+                                    <span>Hesap <i class="fa fa-caret-down"></i></span>
+                                    <div class="tbr-inner">
+                                        <a href="my-account.html">Hesabım</a>
+                                        <a href="#">Çıkış</a>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<header>
+    <nav class="navbar navbar-default">
+        <div class="container">
+            <div class="row">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <!-- Logo -->
+                    <a class="navbar-brand">
+                        <img src="images/basic/logo.png" class="img-responsive" alt=""/>
+                    </a>
+                </div>
+                <!-- Cart & Search -->
+                @if (cartList != null)
+                {
+                    <div class="header-xtra pull-right">
+                        <div class="topcart">
+                            <span>
+                                <i class="fa fa-shopping-cart"></i>
+                            </span>
+                            <div class="cart-info">
+                                <small>Sepetinizde <em class="highlight">@cartList.Count ürün</em> mevcut</small>
+                                @foreach (CartViewModel item in @cartList)
+                                {
+                                    var src = $@"data:image/png;base64,{@item.base64}";
+                                    <div class="ci-item">
+                                        <img src="@src" width="80" alt=""/>
+                                        <div class="ci-item-info">
+                                            <h5>
+                                              <a asp-controller="Home" asp-route-id="@item.productId" asp-action="Product">@item.name</a>
+                                            </h5>
+                                            <p>@item.quantity x @item.price.ToString("C2", new CultureInfo("tr-TR"))</p>
+                                            <div class="ci-edit">
+
+
+                                                <a asp-controller="Home" asp-route-id="@item.Id" asp-action="DeleteItemCart" class="edit fa fa-trash"></a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+
+                                <div class="ci-total">Toplam: @cartList.Sum(i => i.quantity * i.price).ToString("C2", new CultureInfo("tr-Tr"))</div>
+                                <div class="cart-btn">
+                                    <a asp-controller="Home" asp-action="Cart" >Sepete Git</a>
+                                    <a asp-controller="Home" asp-action="Checkout">Satın Al</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+                <!-- Navmenu -->
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1" style=" width: 50%;margin: 0 auto;">
+                    <ul class="nav navbar-nav navbar-right">
+                        <li class="dropdown">
+                            <a href="./index.html" class="dropdown-toggle active" data-toggle="dropdown" role="button" aria-expanded="false">Otomobil</a>
+
+                        </li>
+                        <li class="dropdown mmenu">
+                            <a href="./categories-grid.html" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Suv</a>
+                            <ul class="mega-menu dropdown-menu" role="menu">
+                                <li>
+                                    <div>
+                                        <h5>Sample Title</h5>
+                                        <a href="#">Nam ipsum est</a>
+                                        <a href="#">Volutpat</a>
+                                        <a href="#">In efficitur in</a>
+                                        <a href="#">Accumsan eget <span class="mm-badge-sale">Sale</span></a>
+                                        <a href="#">Odio</a>
+                                        <a href="#">Curabitur</a>
+                                        <a href="#">Phasellus <span class="mm-badge-new">New</span></a>
+                                        <a href="#">Dapibus elit</a>
+                                        <a href="#">Nurna ullamcorper</a>
+                                        <a href="#">Lobortis</a>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div>
+                                        <h5>Sample Title</h5>
+                                        <a href="#">Nam ipsum est</a>
+                                        <a href="#">Volutpat</a>
+                                        <a href="#">In efficitur in</a>
+                                        <a href="#">Accumsan eget</a>
+                                        <a href="#">Odio</a>
+                                        <a href="#">Curabitur</a>
+                                        <a href="#">Phasellus</a>
+                                        <a href="#">Dapibus elit</a>
+                                        <a href="#">Nurna ullamcorper</a>
+                                        <a href="#">Lobortis</a>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div>
+                                        <h5>Sample Title</h5>
+                                        <a href="#">Nam ipsum est</a>
+                                        <a href="#">Volutpat</a>
+                                        <a href="#">In efficitur in</a>
+                                        <a href="#">Accumsan eget</a>
+                                        <a href="#">Odio</a>
+                                        <a href="#">Curabitur</a>
+                                        <a href="#">Phasellus</a>
+                                        <a href="#">Dapibus elit</a>
+                                        <a href="#">Nurna ullamcorper</a>
+                                        <a href="#">Lobortis</a>
+                                    </div>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="dropdown">
+                            <a href="./categories-grid.html" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Kamyon</a>
+                            <ul class="dropdown-menu submenu" role="menu">
+                                <li><a href="./categories-grid.html">Shop - Grid 1</a>
+                                <li><a href="./categories-list.html">Shop - Grid 2</a>
+                                <li>
+                                    <a href="./single-product.html">Shop - Single</a>
+                                </li>
+                                <li>
+                                    <a href="./shoppingcart.html">Shopping Cart</a>
+                                </li>
+                                <li>
+                                    <a href="./checkout.html">Checkout 1</a>
+                                </li>
+                                <li>
+                                    <a href="./checkout-2.html">Checkout 2</a>
+                                </li>
+                                <li>
+                                    <a href="./checkout-2-leftside.html">Checkout Left Sidebar</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Kamyonet</a>
+                            <ul class="dropdown-menu submenu" role="menu">
+                                <li><a href="./blog.html">Blog Posts</a>
+                                <li><a href="./blog-single.html">Blog Single</a>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </nav>
+</header>

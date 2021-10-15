@@ -1,0 +1,147 @@
+﻿@model AdminCustomerViewModel;
+@{
+    ViewData["Title"] = "Update";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+@section scripts{
+    <script>
+        const toBase64 = file => new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = () => resolve(reader.result);
+            reader.onerror = error => reject(error);
+        });
+        $('#checkboxChange').change(function () {
+            $("#statusText").val(this.checked)
+        });
+        $('#customFile').on('change', async function (e) {
+            $("#HiddencustomFile").val(await toBase64(e.target.files[0]));
+        });
+
+    </script>
+}
+<div class="content-body">
+    <div class="row justify-content-between align-items-center mb-10">
+        <div class="col-12 col-lg-auto mb-20">
+            <div class="page-heading">
+                <h3>Müşteri Bilgisi Güncelle</h3>
+            </div>
+        </div>
+    </div>
+    <div class="add-edit-product-wrap col-12">
+        <div class="add-edit-product-form">
+            <form asp-controller="AdminCustomer" asp-action="UpdateCustomer" method="post">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <!-- checkbox -->
+                        <div class="form-group">
+
+                            <div class="form-group">
+                                <label>Müşteri Id</label>
+                                <input name="Id" type="text" value="@Model.updateCustomerViewModel.Id" readonly class="form-control" placeholder="Müşteri Id ...">
+                            </div>
+                            <div class="form-group">
+                                <label>Adı</label>
+                                <input name="name" type="text" value="@Model.updateCustomerViewModel.firstname" class="form-control" placeholder="Adı ...">
+                            </div>
+                            <div class="form-group">
+                                <label>Soyadı</label>
+                                <input name="surname" type="text" value="@Model.updateCustomerViewModel.surname" class="form-control" placeholder="Soyadı ...">
+                            </div>
+                            <div class="form-group">
+                                <label>Email</label>
+                                <input name="email" type="text" value="@Model.updateCustomerViewModel.email" class="form-control" placeholder="Email ...">
+                            </div>
+                            <div class="form-group">
+                                <label>Şifre</label>
+                                <input name="password" type="text" value="@Model.updateCustomerViewModel.password" class="form-control" placeholder="Şifre ...">
+                            </div>
+
+                            <div class="form-group">
+                                <label>Cinsiyet</label>
+                                <div class="form-group">
+                                    <div class="custom-control custom-radio">
+                                        <input class="custom-control-input" type="radio" id="customRadio1" name="customRadio">
+                                        <label for="customRadio1" class="custom-control-label">Kadın</label>
+                                    </div>
+                                    <div class="custom-control custom-radio">
+                                        <input class="custom-control-input" type="radio" id="customRadio2" name="customRadio">
+                                        <label for="customRadio2" class="custom-control-label">Erkek</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Müşteri Durumu</label>
+                                <select name="status" class="custom-select">
+                                    <option value="true">Aktif</option>
+                                    <option value="false">Pasif</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <div class="form-group">
+                                <label>Date:</label>
+                                <div class="input-group date" id="reservationdate" data-target-input="nearest">
+                                    <input type="date" class="form-control datetimepicker-input" data-target="#reservationdate" />
+
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Telefon Numarası</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="fas fa-phone"></i></span>
+                                    </div>
+                                    <input type="number" class="form-control" data-inputmask='"mask": "(999) 999-9999"' data-mask>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Mobil Telefon Numarası</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="fas fa-phone"></i></span>
+                                    </div>
+                                    <input type="number" class="form-control" data-inputmask='"mask": "(999) 999-9999"' data-mask>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>TC Kimlik No</label>
+                                <input type="number" class="form-control" placeholder="TC Kimlik No ...">
+                            </div>
+                            <div class="form-group">
+                                <label>Adres</label>
+                                <textarea class="form-control" rows="3" placeholder="Adres ..."></textarea>
+                            </div>
+                            <div class="form-group">
+                                <!-- <label for="customFile">Custom File</label> -->
+                                <label>Marka Fotoğrafı</label>
+                                <div class="custom-file">
+                                    <input type="file" class="custom-file-input" id="customFile">
+                                    <label class="custom-file-label" for="customFile">Fotoğraf Yükle</label>
+                                </div>
+                            </div>
+
+                        </div>
+
+                            <div class="form-group">
+                                <button type="submit" class="btn btn-primary col start">
+                                    <i class="fas fa-save"></i>
+                                    <span>Kaydet</span>
+                                </button>
+                            </div>
+
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    @if (TempData["Message"] != null)
+    {
+        <div class="alert alert-danger" role="alert">
+            @TempData["Message"]
+        </div>
+    }
+</div>

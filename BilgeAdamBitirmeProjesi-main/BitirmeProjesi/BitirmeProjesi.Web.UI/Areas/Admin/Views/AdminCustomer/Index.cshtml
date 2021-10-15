@@ -1,0 +1,84 @@
+﻿@{
+    ViewData["Title"] = "Müşteri Ekle";
+}
+
+<div class="container-fluid">
+    <div class="card">
+        <div class="card-header">
+            <h3 class="card-title">Kayıtlı Müşteriler</h3>
+        </div>
+        <!-- /.card-header -->
+        <div class="card-body">
+            <table class="table table-bordered table-responsive">
+                <thead>
+                    <tr>
+
+                        <th>İsim</th>
+                        <th>Soyisim</th>
+                        <th>Email</th>
+                        <th>Şifre</th>
+                        <th>cinsiyet</th>
+                        <th>Doğum Tarihi</th>
+                        <th>Telefon No</th>
+                        <th>Cep Telefonu</th>
+                        <th>Adres</th>
+                        <th>TC</th>
+                        <th>Durumu</th>
+                        <th>Son Giriş</th>
+                        <th>Düzenleme Tarhi</th>
+                        <th>Güncelleme Tarihi</th>
+                        <th>GÜNCELLE</th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (MemberViewModel item in Model)
+                    {
+                    <tr>
+                        <td>@item.firstname</td>
+                        <td>@item.surname</td>
+                        <td>@item.email</td>
+                        <td>@item.password</td>
+                        <td>@item.gender</td>
+                        <td>@item.birthDate</td>
+                        <td>@item.phonenumber</td>
+                        <td>@item.mobilePhonenumber</td>
+                        <td>@item.address</td>
+                        <td>@item.tcId</td>
+                        <td>@item.status</td>
+                        <td>@item.lastLoginDate</td>
+                        <td>@item.createdAt</td>
+                        <td>@item.updatedAt</td>
+
+
+                    </tr>
+                    }
+
+                </tbody>
+            </table>
+        </div>
+        <!-- /.card-body -->
+        <div class="card-footer clearfix">
+            <ul class="pagination pagination-sm m-0 float-right">
+                <li class="page-item">
+                    <a class="page-link" href="#">«</a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href="#">1</a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href="#">2</a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href="#">3</a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href="#">»</a>
+                </li>
+            </ul>
+        </div>
+
+
+    </div>
+</div>
+

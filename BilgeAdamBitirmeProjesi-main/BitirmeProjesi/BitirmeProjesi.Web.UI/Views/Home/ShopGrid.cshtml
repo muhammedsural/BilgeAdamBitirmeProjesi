@@ -1,0 +1,165 @@
+@using BitirmeProjesi.Web.UI.Areas.Admin.Models.CategoryViewModels
+@using BitirmeProjesi.Web.UI.Areas.Admin.Models.BrandViewModels
+@model HomeViewModel;
+@{
+    ViewData["Title"] = "Ürünler";
+}
+
+@section scripts
+{
+
+
+    <script>
+    var cateGoryId = 0;
+    var brandId = 0;
+    var page = 0;
+    var sort = 0;
+    formActive();
+
+    function brandSec(val) {
+      brandId = val;
+      formActive();
+    }
+     function sayfaSec(val) {
+          page = val;
+          formActive();
+        }
+
+    function categorySec(val) {
+      cateGoryId = val;
+      formActive();
+    }
+    function sortSec() {
+     sort = $("#shorts option:selected").val();
+     formActive();
+    }
+    function formActive() {
+      $.post("/Home/Grid", {
+        CategoryId: cateGoryId,
+        BrandId: brandId,
+        Page: page,
+        Sort: sort
+      }, function(data, status) {
+        $('#Gridd').html(data);
+      });
+    }
+    </script>
+}
+
+
+<div class="shop-content">
+    <div class="container">
+        <div class="row">
+            <aside class="col-md-3 col-sm-4">
+                <div class="side-widget space50">
+
+                </div>
+                <div class="side-widget">
+                    <h3>
+                        <span>Filitre</span>
+                    </h3>
+                    <h5>Katagori</h5>
+                    <ul class="cat-list">
+                        <li>
+                            <input type="radio" onclick="categorySec(0)" value="0" name="CategoryId" checked> Tümü
+                        </li>
+                        @foreach (CategoryViewModel item in @Model.categoryViewModels)
+                        {
+                            <li>
+                                <input type="radio"  onclick="categorySec(@item.Id)" value="@item.Id" name="CategoryId"> @item.name
+                            </li>
+                        }
+                    </ul>
+
+
+                    <div class="clearfix space30"></div>
+                    <h5>Markalar</h5>
+                    <ul class="brand-list">
+                        <li>
+                            <input type="radio" onclick="brandSec(0)" value="0" name="BrandId" checked> Tümü
+
+                        </li>
+                        @foreach (BrandViewModel item in @Model.brandViewModels)
+                        {
+                            <li>
+                                <input type="radio" onclick="brandSec(@item.Id)" value="@item.Id" name="BrandId"> @item.name
+
+                            </li>
+                        }
+
+                    </ul>
+                    <div class="clearfix space20"></div>
+                </div>
+
+            </aside>
+            <div class="col-md-9 col-sm-8">
+                <div class="filter-wrap">
+                    <div class="row">
+                        <div class="col-md-3 col-sm-3">
+                            View as: <span><a class="active">Grid</a> / <a>List</a></span>
+                        </div>
+                        <div class="col-md-5 col-sm-5">
+                            Sırala:
+                            <select onchange="sortSec()" id="shorts">
+                                <option value="0">İsme Göre</option>
+                                <option value="1">Fiyata Göre Artan</option>
+                                <option value="2">Fiyata Göre Azalan</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="pagenav-wrap">
+                    <div class="row">
+                        <div class="col-md-6 col-sm-6">
+                            Sonuc: <span>1 - 6 arası @Model.productViewModels.Count Ürün</span>
+                        </div>
+                        <div class="col-md-6 col-sm-6">
+                            <div class="pull-right">
+                                <em>Sayfa:</em>
+                                <ul class="page_nav">
+                                    @{
+                                        for (int i = 0; i < @Model.productViewModels.Count / 6; i++)
+                                        {
+                                            <li>
+                                                <a onclick="sayfaSec(@i)" href="#"> @((i + 1).ToString())</a>
+                                            </li>
+                                        }
+                                    }
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="space50"></div>
+                <div id="Gridd">
+
+                </div>
+
+                <div class="pagenav-wrap">
+                    <div class="row">
+                        <div class="col-md-6 col-sm-6">
+                            Sonuc: <span>1 - 6 arası @Model.productViewModels.Count Ürün</span>
+                        </div>
+                        <div class="col-md-6 col-sm-6">
+                            <div class="pull-right">
+                                <em>Sayfa:</em>
+                                <ul class="page_nav">
+                                    @{
+                                        for (int i = 0; i < @Model.productViewModels.Count / 6; i++)
+                                        {
+                                            <li>
+                                                <a onclick="sayfaSec(@i)" href="#"> @((i + 1).ToString())</a>
+                                            </li>
+                                        }
+                                    }
+
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+      
+    </div>
+</div>

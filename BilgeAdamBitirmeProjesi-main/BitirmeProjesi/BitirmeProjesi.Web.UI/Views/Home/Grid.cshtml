@@ -1,0 +1,33 @@
+@using System.Globalization
+@model List<ProductViewModel>
+
+<div class="row">
+    @foreach (ProductViewModel item in @Model)
+    {
+        var src = $@"data:image/png;base64,{@item.productImage}";
+
+        <div class="col-md-4 col-sm-6">
+            <div class="product-item">
+                <div class="item-thumb">
+                    <span class="badge new">New</span>
+                    <img src="@src" height="200" width="250" alt=""/>
+                    <a asp-controller="Home" asp-route-id="@item.Id" asp-action="Product">
+                        <div class="overlay-rmore fa fa-search quickview"></div>
+                    </a>
+
+
+                </div>
+                <div class="product-info">
+                    <h4 class="product-title">
+                        <a href="./single-product.html">@item.name</a>
+                    </h4>
+                    <span> @((@item.price).ToString("C2", new CultureInfo("tr-TR")))</span>
+
+
+                </div>
+            </div>
+        </div>
+    }
+
+
+</div>

@@ -1,0 +1,106 @@
+﻿@{
+    ViewData["Title"] = "Onaylanan Siparişler";
+}
+<div class="container-fluid">
+    <div class="card">
+        <div class="card-header">
+            <h3 class="card-title">Onaylanan Siparişler</h3>
+        </div>
+        <!-- /.card-header -->
+        <div class="card-body">
+            <table class="table table-bordered table-responsive">
+                <thead>
+                    <tr>
+                        <th>Müşteri Adı</th>
+                        <th>Müşteri Soyadı</th>
+                        <th>Müşteri Email</th>
+                        <th>Müşteri Telefon</th>
+                        <th>Ödeme Yöntemi</th>
+                        <th>Ödeme ?</th>
+                        <th>Ödeme Tipi</th>
+                        <th>?</th>
+                        <th>?</th>
+                        <th>Banka Adı</th>
+                        <th>IP</th>
+                        <th>Kullanıcı</th>
+                        <th>Tutar</th>
+                        <th>Vergi Tutarı</th>
+                        <th>Kargo Tutarı</th>
+                        <th>Toplam Tutar</th>
+                        <th>İşem No</th>
+                        <th>Not</th>
+                        <th>Durumu</th>
+                        <th>Cihaz</th>
+                        <th>Müşteri Grubu</th>
+                        <th>Kargo Kodu</th>
+                        <th>Kargo Adı</th>
+                        <th>Kargo Ödeme Yöntemi</th>
+                        <th>Kargo Takip Kodu</th>
+                        <th>Kargo Takip Kodu</th>
+                        <th>Düzenleme Tarihi</th>
+                        <th>Güncelleme Tarihi</th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (ConfirmedOrderViewModel item in Model)
+                    {
+                        <tr>
+                            <td>@item.customerFirstname</td>
+                            <td>@item.customerSurname</td>
+                            <td>@item.customerEmail</td>
+                            <td>@item.customerPhone</td>
+                            <td>@item.paymentTypeName</td>
+                            <td>@item.paymentProviderCode</td>
+                            <td>@item.paymentProviderName</td>
+                            <td>@item.paymentGatewayCode</td>
+                            <td>@item.paymentGatewayName</td>
+                            <td>@item.bankName</td>
+                            <td>@item.clientIp</td>
+                            <td>@item.userAgent</td>
+                            <td>@item.amount</td>
+                            <td>@item.taxAmount</td>
+                            <td>@item.shippingAmount</td>
+                            <td>@item.finalAmount</td>
+                            <td>@item.transactionId</td>
+                            <td>@item.hasUserNote</td>
+                            <td>@item.status</td>
+                            <td>@item.deviceType</td>
+                            <td>@item.memberGroupName</td>
+                            <td>@item.shippingProviderCode</td>
+                            <td>@item.shippingCompanyName</td>
+                            <td>@item.shippingPaymentType</td>
+                            <td>@item.shippingTrackingCode</td>
+                            <td>@item.createdAt</td>
+                            <td>@item.updatedAt</td>
+
+                        </tr>
+                    }
+
+                </tbody>
+            </table>
+        </div>
+        <!-- /.card-body -->
+        <div class="card-footer clearfix">
+            <ul class="pagination pagination-sm m-0 float-right">
+                <li class="page-item">
+                    <a class="page-link" href="#">«</a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href="#">1</a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href="#">2</a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href="#">3</a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href="#">»</a>
+                </li>
+            </ul>
+        </div>
+
+
+    </div>
+</div>

@@ -1,0 +1,94 @@
+﻿@model AdminBrandViewModel
+@{
+    ViewData["Title"] = "Update";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+@section scripts{
+    <script>
+        const toBase64 = file => new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = () => resolve(reader.result);
+            reader.onerror = error => reject(error);
+        });
+        $('#checkboxChange').change(function () {
+            $("#statusText").val(this.checked)
+        });
+        $('#customFile').on('change', async function (e) {
+            $("#HiddencustomFile").val(await toBase64(e.target.files[0]));
+        });
+
+    </script>
+}
+<div class="content-body">
+    <div class="row justify-content-between align-items-center mb-10">
+        <div class="col-12 col-lg-auto mb-20">
+            <div class="page-heading">
+                <h3>Marka Güncelle</h3>
+            </div>
+        </div>
+    </div>
+    <div class="add-edit-product-wrap col-12">
+        <div class="add-edit-product-form">
+            <form asp-controller="AdminBrand" asp-action="UpdateBrand" method="post">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <!-- checkbox -->
+                        <div class="form-group">
+
+                            <div class="form-group">
+                                <label>Marka Id</label>
+                                <input name="Id" type="text" value="@Model.updateBrandViewModel.Id" readonly class="form-control" placeholder="Marka Id ...">
+                            </div>
+
+                            <div class="form-group">
+                                <label>Marka Adı</label>
+                                <input name="name" type="text" value="@Model.updateBrandViewModel.name" class="form-control" placeholder="Marka Adı ...">
+                            </div>
+
+
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <!-- <label for="customFile">Custom File</label> -->
+                            <label>Marka Fotoğrafı</label>
+                            <div class="custom-file">
+                                <input type="file" class="custom-file-input" id="customFile">
+                                <label class="custom-file-label" for="customFile">Fotoğraf Yükle</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label>Marka Durumu</label>
+                            <select name="status" class="custom-select">
+                                <option value="true">Aktif</option>
+                                <option value="false">Pasif</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-primary col start">
+                                <i class="fas fa-save"></i>
+                                <span>Kaydet</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    @if (TempData["Message"] != null)
+    {
+        <div class="alert alert-danger" role="alert">
+            @TempData["Message"]
+        </div>
+    }
+</div>

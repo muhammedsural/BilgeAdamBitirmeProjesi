@@ -1,0 +1,232 @@
+@using System.Globalization
+@model CheckOrderModel;
+@{
+    ViewData["Title"] = "Ödeme";
+}
+
+@section scripts
+{
+    <script src="~/js/script.js"></script>
+    <script>
+    function OdemeYapildi() {
+      Swal.fire(
+       {
+         icon: 'success',
+         title: 'Başarılı',
+         text: 'Siparişiniz Alındı',
+         confirmButtonText: `Kapat`
+       }
+      ).then((result) => {
+         /* Read more about isConfirmed, isDenied below */
+         if (result.isConfirmed) {
+         $("#shipping-zip-form").submit();
+         } 
+       })
+    }
+    </script>
+
+}
+
+@section styles
+{
+    <link rel="stylesheet" type="text/css" href="~/CardAssets/css/styles.css">
+}
+
+<div class="shop-single">
+    <div class="container">
+        <div class="row">
+
+            <div class="col-md-3 col-sm-4">
+                <div class="side-widget space50">
+                    <h3>
+                        <span> Siparişiniz </span>
+                    </h3>
+                    <div>
+                        <table class="cart-table">
+                            <tbody></tbody>
+                            @foreach (CartViewModel item in Model.cartViewModels)
+                            {
+                                var src = $@"data:image/png;base64,{@item.base64}";
+                                <tr>
+                                    <td>
+                                        <div class="item-img col-md-5 col-sm-5">
+                                            <a >
+                                                <img src="@src" class="img-responsive" alt=""/>
+                                            </a>
+                                        </div>
+                                        <div class="item-info col-md-7 col-sm-7">
+                                            <h4>@item.name</h4>
+                                            <p>@item.quantity</p>
+                                            <p>@((item.quantity * item.price).ToString("C2", new CultureInfo("tr-TR")))</p>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <a asp-controller="Home" asp-route-id="@item.Id" asp-action="DeleteItemCart" class="edit fa fa-trash"></a>
+                                    </td>
+                                </tr>
+                            }
+
+                            <tfoot>
+                            <tr>
+                                <th>Sepet Toplamı</th>
+                                <td>
+                                    <div class="">@Model.cartViewModels.Sum(i => i.price * i.quantity).ToString("C2", new CultureInfo("tr-TR"))</div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>STeslimat</th>
+                                <td>
+                                    <div class="">Ücretsiz Teslimat</div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>Sipariş Toplamı</th>
+                                <td>
+                                    <div class="">@Model.cartViewModels.Sum(i => i.price * i.quantity).ToString("C2", new CultureInfo("tr-TR"))</div>
+                                </td>
+                            </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-9 col-sm-8">
+                <!-- HTML -->
+                <div>
+                    <h4 class="account-title"><span class="fa fa-chevron-right"></span>Ödeme Yap</h4>
+                    <div class="account-form">
+                        <form id="shipping-zip-form">
+                            <ul class="form-list row">
+                                <li class="col-md-12 col-sm-12">
+                                    <label>Ülke <em>*</em></label>
+                                    <select required>
+                                        @foreach (CountyViewModel item in @Model.countyViewModels)
+                                        {
+                                            <option value="@item.Id">@item.name</option>
+                                        }
+
+
+                                    </select>
+                                </li>
+                                <li class="col-md-6 col-sm-6">
+                                    <label>Adı <em>*</em></label>
+                                    <input type="text" class="input-text" required>
+                                </li>
+                                <li class="col-md-6 col-sm-6">
+                                    <label>SoyAdı <em>*</em></label>
+                                    <input type="text" class="input-text" required>
+                                </li>
+                                <li class="col-md-6 col-sm-6">
+                                    <label >Adres 1 <em>*</em></label>
+                                    <input required type="text" class="input-text">
+                                </li>
+                                <li class="col-md-6 col-sm-6">
+                                    <label >Adres 2</label>
+                                    <input type="text" class="input-text">
+                                </li>
+
+                                <li class="col-md-6 col-sm-6">
+                                    <label>Şehir</label>
+                                    <select>
+                                        @foreach (CityViewModel item in @Model.cityViewModels)
+                                        {
+                                            <option value="@item.Id">@item.name</option>
+                                        }
+                                    </select>
+                                </li>
+                                <li class="col-md-6 col-sm-6">
+                                    <label >Posta Kodu <em>*</em></label>
+                                    <input required type="text" class="input-text">
+                                </li>
+                                <li class="col-md-6 col-sm-6">
+                                    <label >Email <em>*</em></label>
+                                    <input required type="text" class="input-text">
+                                </li>
+                                <li class="col-md-6 col-sm-6">
+                                    <label >Telefon Numarası <em>*</em></label>
+                                    <input required type="text" class="input-text">
+                                </li>
+
+
+                                <li class="col-md-12 col-sm-12 transfer-wrap">
+                                    <p>
+                                        <input id="direct-transfer" type="radio" name="optradio" class="input-chkbox">
+                                        <label> Banka Transferi </label>
+                                    </p>
+                                    <div id="direct-transfer-msg" class="transfer-guide">
+                                        <p>Siparişiniz onaylandıktan sonra mail adresinize gelecek kod ile banka hesaplarımıza ödemenizi yapabilirsiniz.</p>
+                                    </div>
+                                    <p>
+                                        <input id="cheque-transfer" type="radio" name="optradio" class="input-chkbox">
+                                        <label> Kredi Kartı</label>
+                                    </p>
+                                    <div id="cheque-transfer-msg" class="transfer-guide">
+                                        <div class="creditCardForm">
+                                            <div class="heading">
+                                                <h1>Kredi Kartı Bilgilerinizi Girin</h1>
+                                            </div>
+                                            <div class="payment">
+                                                <form>
+                                                    <div class="form-group owner">
+                                                        <label for="owner">Sahibi</label>
+                                                        <input type="text" class="form-control" id="owner">
+                                                    </div>
+                                                    <div class="form-group CVV">
+                                                        <label for="cvv">CVV</label>
+                                                        <input type="text" class="form-control" id="cvv">
+                                                    </div>
+                                                    <div class="form-group" id="card-number-field">
+                                                        <label for="cardNumber">Kart Numarası</label>
+                                                        <input type="text" class="form-control" id="cardNumber">
+                                                    </div>
+                                                    <div class="form-group" id="expiration-date">
+                                                        <label>Son Kullanım Tarihi</label>
+                                                        <select>
+                                                            <option value="01">Ocak</option>
+                                                            <option value="02">Şubat </option>
+                                                            <option value="03">Mart</option>
+                                                            <option value="04">Nisan</option>
+                                                            <option value="05">Mayıs</option>
+                                                            <option value="06">Haziran</option>
+                                                            <option value="07">Temmuz</option>
+                                                            <option value="08">Ağustos</option>
+                                                            <option value="09">Eylül</option>
+                                                            <option value="10">Ekim</option>
+                                                            <option value="11">Kasım</option>
+                                                            <option value="12">Aralık</option>
+                                                        </select>
+                                                        <select>
+                                                            <option value="16"> 2020</option>
+                                                            <option value="17"> 2021</option>
+                                                            <option value="18"> 2022</option>
+                                                            <option value="19"> 2023</option>
+                                                            <option value="20"> 2024</option>
+                                                            <option value="21"> 2025</option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="form-group" id="credit_cards">
+                                                        <img src="~/CardAssets/images/visa.jpg" id="visa">
+                                                        <img src="~/CardAssets/images/mastercard.jpg" id="mastercard">
+                                                        <img src="~/CardAssets/images/amex.jpg" id="amex">
+                                                    </div>
+
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </li>
+                            </ul>
+                            <div class="buttons-set">
+                                <button class="btn-black" onclick="OdemeYapildi()">Ödeme Yap</button>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>

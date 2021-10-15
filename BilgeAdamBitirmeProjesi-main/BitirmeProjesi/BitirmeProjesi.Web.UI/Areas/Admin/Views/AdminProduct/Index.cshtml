@@ -1,0 +1,276 @@
+﻿@model AdminProductViewModel;
+@{
+    ViewData["Title"] = "Ürün Ekle";
+}
+
+@section scripts{
+    <script>
+        const toBase64 = file => new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = () => resolve(reader.result);
+            reader.onerror = error => reject(error);
+        });
+        $(document).ready(function () {
+            $('#summernote').summernote();
+        });
+        $("#tags").tagsinput('items');
+        $('#tags').on('change',function(e){
+            $("#Hiddentags").val(e.target.value);
+        });
+       $('#customFile').on('change',async function(e) {
+            $("#HiddencustomFile").val(await toBase64(e.target.files[0]));
+        });
+         
+    </script>
+}
+
+
+<section class="content">
+    <div class="container-fluid">
+        <!-- /.card -->
+        <!-- general form elements disabled -->
+        <div class="card card-default collapsed-card">
+            <div class="card-header">
+                <h3 class="card-title">Yeni Ürün Ekle</h3>
+                <div class="card-tools">
+                    <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                        <i class="fas fa-plus"></i>
+                    </button>
+
+                </div>
+            </div>
+            <!-- /.card-header -->
+            <div class="card-body" style="display: none;">
+                <form asp-controller="AdminProduct" asp-action="Insert" method="post">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <!-- checkbox -->
+                            <div class="form-group">
+
+                                <div class="form-group">
+                                    <label>Ürün Adı</label>
+                                    <input name="fullName" type="text" class="form-control" placeholder="Ürün Adı ...">
+                                </div>
+                                <div class="form-group">
+                                    <label>Ürün Kısa Ad</label>
+                                    <input name="name" type="text" class="form-control" placeholder="Ürün Kısa Ad ...">
+                                </div>
+                                <div class="form-group">
+                                    <label>Ürün Tipi</label>
+                                    <select name="type" class="custom-select">
+                                        <option value="Otomobil">Otomobil</option>
+                                        <option value="Suv">Suv</option>
+                                        <option value="Kamyon">Kamyon</option>
+                                        <option value="Kamyonet">Kamyonet</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Ürün Kategori</label>
+                                    <select name="categoryId" class="custom-select">
+                                        @foreach (CategoryViewModel item in Model.categoryViewModels)
+                                        {
+                                            <option value="@item.Id">@item.name</option>
+                                        }
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Ürün Fiyatı</label>
+                                    <input type="number" name="price" class="form-control" placeholder="Ürün Fiyatı ...">
+                                </div>
+
+                                <div class="form-group">
+                                    <label>Stok Miktarı</label>
+                                    <input type="number" name="stockAmount" class="form-control" placeholder="Stok Miktarı ...">
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>Ürün Durumu</label>
+                                            <select name="status" class="custom-select">
+                                                <option value="true">Aktif</option>
+                                                <option value="false">Pasif</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>Vergi</label>
+                                            <select name="tax" class="custom-select">
+                                                <option value="8">8</option>
+                                                <option value="18">18</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <div class="form-group">
+                                    <label>Vergi Durumu</label>
+                                    <select name="taxIncluded" class="custom-select">
+                                        <option value="true">Vergi Dahil</option>
+                                        <option value="false">Vergiler Hariç</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Stok Kodu</label>
+                                    <input name="stockTypeLabel" type="text" class="form-control" placeholder="Stok Kodu ...">
+                                </div>
+                                <div class="form-group">
+                                    <label>Marka</label>
+                                    <select name="brandId" class="custom-select">
+                                        @foreach (BrandViewModel item in Model.brandViewModels)
+                                        {
+                                            <option value="@item.Id">@item.name</option>
+                                        }
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Ürün Etiketleri</label>
+                                    <input data-role="tagsinput" id="tags">
+                                    <input hidden name="searchKeywords" id="Hiddentags">
+
+                                </div>
+
+                                <div class="form-group">
+                                    <label>Ürün Başlığı</label>
+                                    <input type="text" class="form-control" placeholder="Ürün Başlığı ...">
+                                </div>
+                                <div class="form-group">
+                                    <!-- <label for="customFile">Custom File</label> -->
+                                    <label>Ürün Fotoğrafı</label>
+                                    <div class="custom-file">
+                                        <input type="file" class="custom-file-input" id="customFile">
+                                        <input type="hidden" name="productImage" class="form-control" id="HiddencustomFile">
+                                        <label class="custom-file-label" for="customFile">Fotoğraf Yükle</label>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+                    </div>
+                    <section class="content">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="card card-outline card-info">
+                                    <div class="card-header">
+                                        <h3 class="card-title">
+                                            Ürün Detay Açıklaması
+                                        </h3>
+                                    </div>
+                                    <!-- /.card-header -->
+                                    <div class="card-body">
+                                        <textarea name="detail" id="summernote"></textarea>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <!-- /.col-->
+                        </div>
+
+                    </section>
+                    <div class="card-body">
+                        <button type="submit" class="btn btn-primary col start">
+                            <i class="fas fa-save"></i>
+                            <span>Ürünü Kaydet</span>
+                        </button>
+                    </div>
+                </form>
+
+            </div>
+            <!-- /.card-body -->
+        </div>
+    </div>
+</section>
+
+<hr/>
+<div class="container-fluid">
+    <div class="card">
+        <div class="card-header">
+            <h3 class="card-title">Kayıtlı Ürünler</h3>
+        </div>
+        <!-- /.card-header -->
+        <div class="card-body">
+            <table class="table table-bordered table-responsive">
+                <thead>
+                    <tr>
+                        <th>Ürün Adı</th>
+                        <th>Tam Adı</th>
+                        <th>Fiyat</th>
+                        <th>Vergi</th>
+                        <th>Stok</th>
+                        <th>Stok Tipi</th>
+                        <th>Durumu</th>
+                        <th>Vergi Dahil Fiyat</th>
+                        <th>Oluşturulma Tarihi</th>
+                        <th>Güncelleme Tarihi</th>
+                        <th>Seçenekler</th>
+                        <th>Anahtar Kelimeler</th>
+                        <th>Marka</th>
+                        <th>GÜNCELLE</th>
+                        <th>SİL</th>
+                    </tr>
+                </thead>
+                <tbody>
+                @foreach (ProductViewModel item in Model.productViewModels)
+                {
+                    <tr>
+                        <td>@item.name</td>
+                        <td>@item.fullName</td>
+                        <td>@item.price</td>
+                        <td>@item.tax</td>
+                        <td>@item.stockAmount</td>
+                        <td>@item.stockTypeLabel</td>
+                        <td>@item.status</td>
+                        <td>@item.taxIncluded</td>
+                        <td>@item.createdAt</td>
+                        <td>@item.updatedAt</td>
+                        <td>@item.hasOption</td>
+                        <td>@item.searchKeywords</td>
+                        <td>@item.brandId</td>
+                        <td><a asp-controller="AdminProduct" asp-action="ProductUpdateView" asp-route-id="@item.Id" class="btn btn-info">Güncelle</a></td>
+                        <td><a asp-controller="AdminProduct" asp-action="DeleteProduct" asp-route-id="@item.Id" class="btn btn-danger">Sil</a></td>
+
+
+                    </tr>
+                }
+
+                </tbody>
+            </table>
+        </div>
+        <!-- /.card-body -->
+        <div class="card-footer clearfix">
+            <ul class="pagination pagination-sm m-0 float-right">
+                <li class="page-item">
+                    <a class="page-link" href="#">«</a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href="#">1</a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href="#">2</a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href="#">3</a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href="#">»</a>
+                </li>
+            </ul>
+        </div>
+
+
+    </div>
+</div>
+@if (TempData["Message"] != null)
+{
+    <div class="alert alert-danger" role="alert">
+        @TempData["Message"]
+    </div>
+}
+

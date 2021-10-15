@@ -1,0 +1,29 @@
+# Default ignored files
+/shelf/
+/workspace.xml
+# Rider ignored files
+/modules.xml
+/.idea.BitirmeProjesi.iml
+/projectSettingsUpdater.xml
+/contentModel.xml
+# Datasource local storage ignored files
+/dataSources/
+/dataSources.local.xml
+# Editor-based HTTP Client requests
+/httpRequests/
+/.idea/
+/BitirmeProjesi.Common/bin/
+/BitirmeProjesi.Common/obj/
+/BitirmeProjesi.Core/bin/
+/BitirmeProjesi.Core/obj/
+/BitirmeProjesi.Model/bin/
+/BitirmeProjesi.Model/obj/
+/BitirmeProjesi.Service/bin/
+/BitirmeProjesi.Service/obj/
+/BitirmeProjesi.API/bin/
+/BitirmeProjesi.API/obj/
+/BitirmeProjesi.Web.UI/bin/
+/BitirmeProjesi.Web.UI/obj/
+/BitirmeProjesi.Web.UI/Program.cs
+/BitirmeProjesi.Web.UI/appsettings.Development.json
+/BitirmeProjesi.API/Program.cs

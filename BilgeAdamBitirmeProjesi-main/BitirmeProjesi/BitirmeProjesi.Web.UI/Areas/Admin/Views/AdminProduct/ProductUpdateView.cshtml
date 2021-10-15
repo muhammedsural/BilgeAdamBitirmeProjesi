@@ -1,0 +1,192 @@
+﻿@model AdminProductViewModel;
+@{
+    ViewData["Title"] = "Update";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+@section scripts{
+    <script>
+        const toBase64 = file => new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = () => resolve(reader.result);
+            reader.onerror = error => reject(error);
+        });
+        $(document).ready(function () {
+            $('#summernote').summernote();
+        });
+        $("#tags").tagsinput('items');
+        $('#tags').on('change', function (e) {
+            $("#Hiddentags").val(e.target.value);
+        });
+        $('#customFile').on('change', async function (e) {
+            $("#HiddencustomFile").val(await toBase64(e.target.files[0]));
+        });
+
+    </script>
+}
+
+<div class="content-body">
+    <div class="row justify-content-between align-items-center mb-10">
+        <div class="col-12 col-lg-auto mb-20">
+            <div class="page-heading">
+                <h3>Ürünü Güncelle</h3>
+            </div>
+        </div>
+    </div>
+    <div class="add-edit-product-wrap col-12">
+        <div class="add-edit-product-form">
+            <form asp-controller="AdminProduct" asp-action="UpdateProduct" method="post">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <div class="form-group">
+                                <label>Ürün Id</label>
+                                <input name="Id" type="text" readonly value="@Model.updateProductViewModel.Id" class="form-control" placeholder="Ürün Id ...">
+                            </div>
+                            <div class="form-group">
+                                <label>Ürün Adı</label>
+                                <input name="fullName" type="text" value="@Model.updateProductViewModel.fullName" class="form-control" placeholder="Ürün Adı ...">
+                            </div>
+                            <div class="form-group">
+                                <label>Ürün Kısa Ad</label>
+                                <input name="name" type="text" value="@Model.updateProductViewModel.name" class="form-control" placeholder="Ürün Kısa Ad ...">
+                            </div>
+                            <div class="form-group">
+                                <label>Ürün Tipi</label>
+                                <select name="type" class="custom-select">
+                                    <option value="Otomobil">Otomobil</option>
+                                    <option value="Suv">Suv</option>
+                                    <option value="Kamyonet">Kamyonet</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Ürün Kategori</label>
+                                <select name="categoryId" class="custom-select">
+                                    @foreach (CategoryViewModel item in @Model.categoryViewModels)
+                                    {
+                                        <option value="@item.Id">@item.name</option>
+                                    }
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Ürün Markası</label>
+                                <select name="brandId" class="custom-select">
+                                    @foreach (BrandViewModel item in @Model.brandViewModels)
+                                    {
+                                        <option value="@item.Id">@item.name</option>
+                                    }
+                                </select>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Ürün Fiyatı</label>
+                                        <input type="text" value="@Model.updateProductViewModel.price" name="price" class="form-control" placeholder="Ürün Fiyatı ...">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Stok Miktarı</label>
+                                        <input type="text" value="@Model.updateProductViewModel.stockAmount" name="stockAmount" class="form-control" placeholder="Stok Miktarı ...">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Ürün Durumu</label>
+                                        <select name="status" class="custom-select">
+                                            <option value="true">Aktif</option>
+                                            <option value="false">Pasif</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Vergi</label>
+                                        <select name="tax" class="custom-select">
+                                            <option value="8">8</option>
+                                            <option value="18">18</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <div class="form-group">
+                                <label>Vergi Durumu</label>
+                                <select name="taxIncluded" class="custom-select">
+                                    <option value="true">Vergi Dahil</option>
+                                    <option value="false">Vergiler Hariç</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Stok Kodu</label>
+                                <input name="stockTypeLabel" type="text" class="form-control" placeholder="Stok Kodu ...">
+                            </div>
+
+                            <div class="form-group">
+                                <label>Ürün Etiketleri</label>
+                                <input data-role="tagsinput" id="tags">
+                                <input hidden name="searchKeywords" id="Hiddentags">
+                            </div>
+
+                            <div class="form-group">
+                                <label>Ürün Başlığı</label>
+                                <input type="text" class="form-control" placeholder="Ürün Başlığı ...">
+                            </div>
+                            <div class="form-group">
+                                <!-- <label for="customFile">Custom File</label> -->
+                                <label>Ürün Fotoğrafı</label>
+                                <div class="custom-file">
+                                    <input type="file" class="custom-file-input" id="customFile">
+                                    <input type="hidden" name="productImage"  value="@Model.updateProductViewModel.productImage class="form-control" id="HiddencustomFile">
+                                    <label class="custom-file-label" for="customFile">Fotoğraf Yükle</label>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+                <section class="content">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="card card-outline card-info">
+                                <div class="card-header">
+                                    <h3 class="card-title">
+                                        Ürün Detay Açıklaması
+                                    </h3>
+                                </div>
+                                <!-- /.card-header -->
+                                <div class="card-body">
+                                    <textarea name="detail" id="summernote"></textarea>
+                                </div>
+
+                            </div>
+                        </div>
+                        <!-- /.col-->
+                    </div>
+
+                </section>
+                <div class="card-body">
+                    <button type="submit" class="btn btn-primary col start">
+                        <i class="fas fa-save"></i>
+                        <span>Ürünü Kaydet</span>
+                    </button>
+                </div>
+
+            </form>
+        </div>
+
+    </div>
+    @if (TempData["Message"] != null)
+    {
+        <div class="alert alert-danger" role="alert">
+            @TempData["Message"]
+        </div>
+    }
+</div>

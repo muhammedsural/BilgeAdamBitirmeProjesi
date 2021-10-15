@@ -1,0 +1,131 @@
+﻿@{
+    ViewData["Title"] = "Kategori Ekle";
+}
+
+@section scripts{
+    <script>
+      $('#checkboxChange').change( function(){
+       $("#statusText").val(this.checked)
+ });
+   
+    
+    </script>
+}
+
+<section class="content">
+    <div class="container-fluid">
+        <!-- /.card -->
+        <!-- general form elements disabled -->
+        <div class="card card-default">
+            <div class="card-header">
+                <h3 class="card-title">Yeni Kategori Ekle</h3>
+                <div class="card-tools">
+                    <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                        <i class="fas fa-minus"></i>
+                    </button>
+
+                </div>
+            </div>
+            <!-- /.card-header -->
+            <div class="card-body">
+                <form asp-controller="AdminCategory" asp-action="Insert" method="post">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <!-- checkbox -->
+                            <div class="form-group">
+                                <div class="form-group">
+                                    <label>Kategori Adı</label>
+                                    <input name="name" type="text" class="form-control" placeholder="Kategori Adı ...">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label>Katagori Durumu</label>
+                                <select name="status" class="custom-select">
+                                    <option value="true">Aktif</option>
+                                    <option value="false">Pasif</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="form-group">
+                            <label>Açıklama</label>
+                            <input name="metaDescription" type="text" class="form-control" placeholder="Kategori Açıklama ...">
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div id="actions" class="row">
+                            <div class="btn-group w-100">
+
+                                <button type="submit" class="btn btn-primary col start">
+                                    <i class="fas fa-save"></i>
+                                    <span>Kaydet</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <!-- /.card-body -->
+        </div>
+    </div>
+</section>
+
+<hr/>
+<div class="container-fluid">
+    <div class="card">
+        <div class="card-header">
+            <h3 class="card-title">Kayıtlı Kategoriler</h3>
+        </div>
+        <!-- /.card-header -->
+        <div class="card-body">
+            <table class="table table-bordered ">
+                <thead>
+                    <tr>
+                        <th>Kataregori Adı</th>
+                        <th>Durumu</th>
+                        <th>GÜNCELLE</th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                @foreach (CategoryViewModel item in Model)
+                {
+                    <tr>
+                        <td>@item.name</td>
+                        <td>@item.status</td>
+
+                        <td><a asp-controller="AdminCategory" asp-action="CategoryUpdateView" asp-route-id="@item.Id" class="btn btn-info">Güncelle</a></td>
+                        <td><a asp-controller="AdminCategory" asp-action="DeleteCategory" asp-route-id="@item.Id" class="btn btn-danger">Sil</a></td>
+                    </tr>
+                }
+
+                </tbody>
+            </table>
+        </div>
+        <!-- /.card-body -->
+        <div class="card-footer clearfix">
+            <ul class="pagination pagination-sm m-0 float-right">
+                <li class="page-item">
+                    <a class="page-link" href="#">«</a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href="#">1</a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href="#">2</a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href="#">3</a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href="#">»</a>
+                </li>
+            </ul>
+        </div>
+
+
+    </div>
+</div>

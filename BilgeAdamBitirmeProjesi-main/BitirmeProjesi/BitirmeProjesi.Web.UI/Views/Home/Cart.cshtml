@@ -1,0 +1,98 @@
+@using System.Globalization
+@model List<CartViewModel>;
+@{
+    ViewData["Title"] = "Sepetler";
+}
+<div class="shop-single shopping-cart">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 col-sm-12">
+                <table class="cart-table">
+                    <tr>
+                        <th>Sil</th>
+                        <th>Ürün Resmi</th>
+                        <th>Ürün İsmi</th>
+                        <th>Miktar</th>
+                        <th>Fiyat</th>
+                        <th>Toplam</th>
+                    </tr>
+                    @foreach (CartViewModel item in Model)
+                    {
+                        var src = $@"data:image/png;base64,{@item.base64}";
+                        <tr>
+                            <td>
+                                  <a asp-controller="Home" asp-route-id="@item.Id" asp-action="DeleteItemCart" class="edit fa fa-trash"></a>
+                            </td>
+                            <td>
+                                <img src="@src" class="img-responsive" alt=""/>
+                            </td>
+                            <td>
+                                <h4>
+                                    <a asp-controller="Home" asp-route-id="@item.productId" asp-action="Product">@item.name</a>
+                                </h4>
+
+                            </td>
+
+                            <td>
+                                <div class="item-price">@item.quantity</div>
+                            </td>
+                            <td>
+                                <div class="item-price"> @item.price.ToString("C2", new CultureInfo("tr-TR"))</div>
+                            </td>
+                            <td>
+                                <div class="item-price">@((item.quantity * item.price).ToString("C2", new CultureInfo("tr-TR")))</div>
+                            </td>
+                        </tr>
+                    }
+
+                </table>
+
+                <div class="clearfix space20"></div>
+                <div class="row shipping-info-wrap">
+                    <div class="col-md-4 col-sm-4 col-xs-12">
+                        <div class="shipping">
+
+                        </div>
+                    </div>
+                    <div class="col-md-4 col-sm-4 col-xs-12">
+
+                    </div>
+                    <div class="col-md-4 col-sm-4 col-xs-12">
+                        <div class="totals">
+                            <table id="shopping-cart-totals-table">
+                                <tfoot>
+                                <tr>
+                                    <td style="" class="a-right" colspan="1">
+                                        <strong>Genel Toplam</strong>
+                                    </td>
+                                    <td style="" class="a-right">
+                                        <strong>
+                                            <span class="price">@Model.Sum(i => i.price * i.quantity).ToString("C2", new CultureInfo("tr-TR"))</span>
+                                        </strong>
+                                    </td>
+                                </tr>
+                                </tfoot>
+                                <tbody>
+
+                                </tbody>
+                            </table>
+                            <ul class="checkout-types">
+                                <li class="space10">
+                                    <a asp-controller="Home" asp-action="Checkout" type="button" class="btn-color"> Ödeme Yap</a>
+                                </li>
+
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="space40"></div>
+                <div class="row">
+                    <div class="col-md-12 col-sm-12">
+
+                        <div class="space30"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
